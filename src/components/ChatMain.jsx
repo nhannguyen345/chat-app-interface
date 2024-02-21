@@ -12,9 +12,40 @@ const ChatMain = () => {
   const [inputValue, setInputValue] = useState("");
   const { showContactIf, handleChangeStatus } = useContext(ChatContext);
 
+  const [chatContent, setChatContent] = useState([]);
+
   const onEmojiClick = (emojiData, event) => {
     console.log(event);
     setInputValue((prevInput) => prevInput + emojiData.emoji);
+  };
+
+  const handleSendMessage = () => {
+    setChatContent((prevChat) => [
+      ...prevChat,
+      {
+        messageType: "text",
+        message: inputValue,
+        date: "3:00 pm",
+        sender: 1,
+        receiver: 2,
+      },
+    ]);
+    setInputValue("");
+  };
+
+  const handleClickImage = (e) => {
+    setChatContent((prevChat) => [
+      ...prevChat,
+      {
+        messageType: "image",
+        message: e.target.value,
+        date: "3:00 pm",
+        sender: 1,
+        receiver: 2,
+      },
+    ]);
+    setInputValue("");
+    console.log(e.target);
   };
 
   return (
@@ -44,9 +75,42 @@ const ChatMain = () => {
 
       {/* Nội dung chat */}
       <div
-        className="w-full flex-1"
+        className="w-full flex-1 flex flex-col font-sans"
         style={{ backgroundImage: `url(${bgChat})` }}
-      ></div>
+      >
+        {chatContent.map((message, index) => {
+          if (message.sender === 1) {
+            return (
+              <div
+                className="w-full px-4 mt-2 flex flex-col items-end"
+                key={index}
+              >
+                <div className="w-fit max-w-[65%] h-fit p-2 bg-[#8bb8d5] rounded-lg">
+                  {message.message}{" "}
+                  <span className="text-[12px] text-gray-600">
+                    {message.date}
+                  </span>
+                </div>
+              </div>
+            );
+          } else {
+            return (
+              <div
+                className="w-full px-4 mt-2 flex flex-col items-start"
+                key={index}
+              >
+                <div className="w-fit max-w-[65%] h-fit p-2 bg-[white] rounded-lg">
+                  {message.message}
+                  {"  "}
+                  <span className="text-[12px] text-gray-400">
+                    {message.date}
+                  </span>
+                </div>
+              </div>
+            );
+          }
+        })}
+      </div>
 
       {/* Phần nhập liệu */}
       <div className="relative h-[80px] w-full flex flex-row justify-around items-center bg-[#F0F2F5] px-5">
@@ -72,10 +136,11 @@ const ChatMain = () => {
             type="file"
             accept="image/*"
             multiple={false}
+            onChange={handleClickImage}
           />
         </div>
         <input
-          className="resize-none w-9/12 h-[50px] p-3 rounded-md outline-none"
+          className="resize-none w-9/12 h-[50px] p-3 rounded-md outline-none font-sans"
           placeholder="Type a message"
           type="text"
           value={inputValue}
@@ -86,6 +151,7 @@ const ChatMain = () => {
         <SendIcon
           className="hover:cursor-pointer transform transition-transform active:scale-110"
           sx={{ fontSize: 28, color: "#5c6c75" }}
+          onClick={handleSendMessage}
         />
       </div>
     </div>
