@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import bgChat from "../assets/bgChat.png";
 import Picker from "emoji-picker-react";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
@@ -10,9 +10,19 @@ import { useContext } from "react";
 const ChatMain = () => {
   const [displayEmoji, setDisplayEmoji] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [chatContent, setChatContent] = useState([]);
   const { showContactIf, handleChangeStatus } = useContext(ChatContext);
 
-  const [chatContent, setChatContent] = useState([]);
+  const refDiv = useRef(null);
+
+  const scrollToLastMessage = () => {
+    const lastChildElement = refDiv.current?.lastElementChild;
+    lastChildElement?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToLastMessage();
+  }, [chatContent]);
 
   const onEmojiClick = (emojiData, event) => {
     console.log(event);
@@ -26,26 +36,31 @@ const ChatMain = () => {
         messageType: "text",
         message: inputValue,
         date: "3:00 pm",
-        sender: 1,
-        receiver: 2,
+        senderid: 2,
+        receiverid: 1,
       },
     ]);
     setInputValue("");
   };
 
   const handleClickImage = (e) => {
-    setChatContent((prevChat) => [
-      ...prevChat,
-      {
-        messageType: "image",
-        message: e.target.value,
-        date: "3:00 pm",
-        sender: 1,
-        receiver: 2,
-      },
-    ]);
-    setInputValue("");
-    console.log(e.target);
+    const img = e.target.files[0];
+    if (img) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setChatContent((prevChat) => [
+          ...prevChat,
+          {
+            messageType: "image",
+            message: e.target.result,
+            date: "3:00 pm",
+            sender: 2,
+            receiver: 1,
+          },
+        ]);
+      };
+      reader.readAsDataURL(img);
+    }
   };
 
   return (
@@ -75,37 +90,57 @@ const ChatMain = () => {
 
       {/* Nội dung chat */}
       <div
-        className="w-full flex-1 flex flex-col font-sans"
+        ref={refDiv}
+        className="w-full h-full overflow-y-auto flex-1 flex flex-col font-sans"
         style={{ backgroundImage: `url(${bgChat})` }}
       >
         {chatContent.map((message, index) => {
           if (message.sender === 1) {
             return (
               <div
-                className="w-full px-4 mt-2 flex flex-col items-end"
+                className="w-full px-4 my-[5px] flex flex-col items-end"
                 key={index}
               >
-                <div className="w-fit max-w-[65%] h-fit p-2 bg-[#8bb8d5] rounded-lg">
-                  {message.message}{" "}
-                  <span className="text-[12px] text-gray-600">
-                    {message.date}
-                  </span>
-                </div>
+                {message.messageType === "text" ? (
+                  <p className="w-fit max-w-[65%] h-fit p-2 bg-[#8bb8d5] rounded-lg whitespace-pre-line">
+                    {message.message}
+                    {"\n"}
+                    <span className="text-[12px] text-gray-600">
+                      {message.date}
+                    </span>
+                  </p>
+                ) : (
+                  <img
+                    className="max-w-[400px] p-[5px] bg-[#8bb8d5] rounded-lg float-right"
+                    key={index}
+                    src={message.message}
+                    alt=""
+                  />
+                )}
               </div>
             );
           } else {
             return (
               <div
-                className="w-full px-4 mt-2 flex flex-col items-start"
+                className="w-full px-4 my-[5px] flex flex-col items-start"
                 key={index}
               >
-                <div className="w-fit max-w-[65%] h-fit p-2 bg-[white] rounded-lg">
-                  {message.message}
-                  {"  "}
-                  <span className="text-[12px] text-gray-400">
-                    {message.date}
-                  </span>
-                </div>
+                {message.messageType === "text" ? (
+                  <p className="w-fit max-w-[65%] h-fit p-2 bg-[white] rounded-lg whitespace-pre-line">
+                    {message.message}
+                    {"\n"}
+                    <span className="text-[12px] text-gray-400">
+                      {message.date}
+                    </span>
+                  </p>
+                ) : (
+                  <img
+                    className="max-w-[400px] p-[5px] bg-[white] rounded-lg"
+                    key={index}
+                    src={message.message}
+                    alt=""
+                  />
+                )}
               </div>
             );
           }
@@ -139,7 +174,7 @@ const ChatMain = () => {
             onChange={handleClickImage}
           />
         </div>
-        <input
+        <textarea
           className="resize-none w-9/12 h-[50px] p-3 rounded-md outline-none font-sans"
           placeholder="Type a message"
           type="text"
