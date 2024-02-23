@@ -6,12 +6,18 @@ import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternate
 import SendIcon from "@mui/icons-material/Send";
 import ChatContext from "../context/chatContext";
 import { useContext } from "react";
+import ImageOverlay from "./ImageOverlay";
 
 const ChatMain = () => {
   const [displayEmoji, setDisplayEmoji] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [chatContent, setChatContent] = useState([]);
-  const { showContactIf, handleChangeStatus } = useContext(ChatContext);
+  const {
+    showContactIf,
+    handleChangeStatus,
+    showImageModal,
+    handleShowImageModal,
+  } = useContext(ChatContext);
 
   const refDiv = useRef(null);
 
@@ -43,7 +49,7 @@ const ChatMain = () => {
     setInputValue("");
   };
 
-  const handleClickImage = (e) => {
+  const handleSendImage = (e) => {
     const img = e.target.files[0];
     if (img) {
       const reader = new FileReader();
@@ -115,6 +121,9 @@ const ChatMain = () => {
                     key={index}
                     src={message.message}
                     alt=""
+                    onClick={() => {
+                      handleShowImageModal(true, message.message);
+                    }}
                   />
                 )}
               </div>
@@ -139,12 +148,23 @@ const ChatMain = () => {
                     key={index}
                     src={message.message}
                     alt=""
+                    onClick={() => {
+                      console.log("123");
+                      handleShowImageModal(true, message.message);
+                    }}
                   />
                 )}
               </div>
             );
           }
         })}
+
+        {/* Nơi hiển thị chế độ xem ảnh */}
+        {showImageModal.show ? (
+          <ImageOverlay imageUrl={showImageModal.imageUrl} />
+        ) : (
+          ""
+        )}
       </div>
 
       {/* Phần nhập liệu */}
@@ -171,7 +191,7 @@ const ChatMain = () => {
             type="file"
             accept="image/*"
             multiple={false}
-            onChange={handleClickImage}
+            onChange={handleSendImage}
           />
         </div>
         <textarea
