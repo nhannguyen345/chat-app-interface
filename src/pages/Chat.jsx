@@ -1,5 +1,5 @@
 import ChatMain from "../components/Chatmain";
-import ContactInfo from "../components/Contactinfo";
+import ContactInfo from "../components/ContactInfo";
 import LeftBar from "../components/LeftBar";
 import ChatProvider from "../context/ChatProvider";
 

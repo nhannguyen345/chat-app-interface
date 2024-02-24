@@ -8,8 +8,8 @@ const ContactInfo = () => {
     <div
       className={`flex-1 max-sm:hidden bg-[#f0f2f5]  ${
         !showContactIf
-          ? "hidden "
-          : "animate-in slide-in-from-right-96 duration-500"
+          ? "hidden"
+          : "animate-in slide-in-from-right-96 duration-300"
       }`}
     >
       <div className="flex flex-row gap-8 items-center h-[58px] w-full px-8 py-1 bg-[#f0f2f5]">

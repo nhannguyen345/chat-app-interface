@@ -12,7 +12,7 @@ const Profile = () => {
   const handleChangeStatusEdtName = () => setStatusEdtName(!statusEdtName);
   const handleChangeStatusEdtAbout = () => setStatusEdtAbout(!statusEdtAbout);
   return (
-    <div className="w-full h-full flex flex-col animate-in slide-in-from-left-96 duration-500 bg-[#f0f2f5]">
+    <div className="w-full h-full flex flex-col animate-in slide-in-from-left-96 duration-300 bg-[#f0f2f5]">
       {/* Header */}
       <div className="bg-[#4866a1] h-[120px] pt-[64px] pl-[20px] flex flex-row items-center gap-8">
         <ArrowBackIcon
