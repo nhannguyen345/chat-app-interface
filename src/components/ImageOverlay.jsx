@@ -4,12 +4,12 @@ import GetAppIcon from "@mui/icons-material/GetApp";
 import ChatContext from "../context/chatContext";
 
 const ImageOverlay = (imageUrl) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { handleShowImageModal } = useContext(ChatContext);
   return (
     <div className="absolute top-0 left-0 z-20 h-[100%] w-[100%]">
       <div className="h-full w-full bg-black opacity-50"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[92vh] w-[92vw] bg-white shadow-lg">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[92vh] w-[92vw] bg-white shadow-lg ring-gray-600">
         {/* Header chứa nút đóng */}
         <div className="w-full flex flex-row justify-end p-1">
           <a
@@ -30,9 +30,9 @@ const ImageOverlay = (imageUrl) => {
             onClick={() => handleShowImageModal(false, "")}
           />
         </div>
-        {setTimeout(() => {
+        {/* {setTimeout(() => {
           setIsLoading(false);
-        }, 2000)}
+        }, 2000)} */}
         {isLoading ? (
           <div className="h-5/6 w-full flex justify-center items-center">
             <svg
@@ -47,9 +47,9 @@ const ImageOverlay = (imageUrl) => {
             </svg>
           </div>
         ) : (
-          <div className="">
+          <div className="w-full max-h-[90%] overflow-y-auto">
             <img
-              className="max-h-[88%] max-w-[88%] mx-auto mt-1"
+              className="md:max-h-[580px] md:max-w-[94%] object-cover mx-auto mt-1"
               src={imageUrl.imageUrl}
               alt=""
             />

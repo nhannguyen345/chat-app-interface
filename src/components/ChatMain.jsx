@@ -42,8 +42,8 @@ const ChatMain = () => {
         messageType: "text",
         message: inputValue,
         date: "3:00 pm",
-        senderid: 2,
-        receiverid: 1,
+        sender: 1,
+        receiver: 2,
       },
     ]);
     setInputValue("");
@@ -60,8 +60,8 @@ const ChatMain = () => {
             messageType: "image",
             message: e.target.result,
             date: "3:00 pm",
-            sender: 2,
-            receiver: 1,
+            sender: 1,
+            receiver: 2,
           },
         ]);
       };
@@ -108,7 +108,7 @@ const ChatMain = () => {
                 key={index}
               >
                 {message.messageType === "text" ? (
-                  <p className="w-fit max-w-[65%] h-fit p-2 bg-[#8bb8d5] rounded-lg whitespace-pre-line">
+                  <p className="w-fit max-w-[65%] h-fit p-2 bg-[#8bb8d5] rounded-lg whitespace-pre-line text-sm">
                     {message.message}
                     {"\n"}
                     <span className="text-[12px] text-gray-600">
@@ -135,7 +135,7 @@ const ChatMain = () => {
                 key={index}
               >
                 {message.messageType === "text" ? (
-                  <p className="w-fit max-w-[65%] h-fit p-2 bg-[white] rounded-lg whitespace-pre-line">
+                  <p className="w-fit max-w-[65%] h-fit p-2 bg-[white] rounded-lg whitespace-pre-line text-sm">
                     {message.message}
                     {"\n"}
                     <span className="text-[12px] text-gray-400">
@@ -149,7 +149,6 @@ const ChatMain = () => {
                     src={message.message}
                     alt=""
                     onClick={() => {
-                      console.log("123");
                       handleShowImageModal(true, message.message);
                     }}
                   />
