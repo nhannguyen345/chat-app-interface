@@ -42,8 +42,8 @@ const ChatMain = () => {
         messageType: "text",
         message: inputValue,
         date: "3:00 pm",
-        sender: 1,
-        receiver: 2,
+        sender: 2,
+        receiver: 1,
       },
     ]);
     setInputValue("");
@@ -110,14 +110,14 @@ const ChatMain = () => {
                 {message.messageType === "text" ? (
                   <p className="w-fit max-w-[65%] h-fit p-2 bg-[#8bb8d5] rounded-lg whitespace-pre-line text-sm">
                     {message.message}
-                    {"\n"}
+                    {"\t"}
                     <span className="text-[12px] text-gray-600">
                       {message.date}
                     </span>
                   </p>
                 ) : (
                   <img
-                    className="max-w-[400px] p-[5px] bg-[#8bb8d5] rounded-lg float-right"
+                    className="max-w-[400px] max-h-[400px] p-[5px] bg-[#8bb8d5] rounded-lg float-right"
                     key={index}
                     src={message.message}
                     alt=""
@@ -137,14 +137,14 @@ const ChatMain = () => {
                 {message.messageType === "text" ? (
                   <p className="w-fit max-w-[65%] h-fit p-2 bg-[white] rounded-lg whitespace-pre-line text-sm">
                     {message.message}
-                    {"\n"}
+                    {"\t"}
                     <span className="text-[12px] text-gray-400">
                       {message.date}
                     </span>
                   </p>
                 ) : (
                   <img
-                    className="max-w-[400px] p-[5px] bg-[white] rounded-lg"
+                    className="max-w-[400px] max-h-[400px] p-[5px] bg-[white] rounded-lg"
                     key={index}
                     src={message.message}
                     alt=""

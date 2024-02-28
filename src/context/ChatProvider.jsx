@@ -7,6 +7,11 @@ const ChatProvider = ({ children }) => {
     show: false,
     imageUrl: "",
   });
+  const [showFriendModal, setShowFriendModal] = useState({
+    show: false,
+    idxTab: -1,
+    friend: {},
+  });
   const handleChangeStatus = () => {
     setShowContactIf(!showContactIf);
   };
@@ -19,6 +24,10 @@ const ChatProvider = ({ children }) => {
     setShowImageModal({ show: flag, imageUrl: url });
   };
 
+  const handleShowFriendModal = (flag, indexTab, infoFriend) => {
+    setShowFriendModal({ show: flag, idxTab: indexTab, friend: infoFriend });
+  };
+
   return (
     <ChatContext.Provider
       value={{
@@ -28,6 +37,8 @@ const ChatProvider = ({ children }) => {
         handleShowProfile,
         showImageModal,
         handleShowImageModal,
+        showFriendModal,
+        handleShowFriendModal,
       }}
     >
       {children}

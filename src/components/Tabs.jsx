@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-
+import ChatContext from "../context/chatContext";
+import { useContext } from "react";
+import FriendInfoModal from "./FriendInfoModal";
 const tabsData = [
   {
     label: "All message",
@@ -89,25 +91,18 @@ const tabsData = [
         name: "Maria Ozawa",
         avatarUrl:
           "https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2023/02/Hinh-anh-avatar-Facebook.jpg?ssl=1",
-        lastMesage: "Hello, can you help me?",
-        date: "2:23 pm",
       },
       {
         id: 2,
         name: "Tom Cruise",
         avatarUrl:
           "https://thuthuatnhanh.com/wp-content/uploads/2018/07/anh-dai-dien-dep.jpg",
-        lastMesage: "Oke, let do it",
-        date: "4:16 pm",
       },
       {
         id: 3,
         name: "Mizuki Sataro",
         avatarUrl:
           "https://inkythuatso.com/uploads/thumbnails/800/2022/03/anh-dai-dien-facebook-dep-cho-nam-30-28-16-26-50.jpg",
-        lastMesage:
-          "i hate you, because everything is you cause. Please leave me alone!!!",
-        date: "8:32 am",
       },
     ],
   },
@@ -119,25 +114,18 @@ const tabsData = [
         name: "Maria Ozawa",
         avatarUrl:
           "https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2023/02/Hinh-anh-avatar-Facebook.jpg?ssl=1",
-        lastMesage: "Hello, can you help me?",
-        date: "2:23 pm",
       },
       {
         id: 2,
         name: "Tom Cruise",
         avatarUrl:
           "https://thuthuatnhanh.com/wp-content/uploads/2018/07/anh-dai-dien-dep.jpg",
-        lastMesage: "Oke, let do it",
-        date: "4:16 pm",
       },
       {
         id: 3,
         name: "Mizuki Sataro",
         avatarUrl:
           "https://inkythuatso.com/uploads/thumbnails/800/2022/03/anh-dai-dien-facebook-dep-cho-nam-30-28-16-26-50.jpg",
-        lastMesage:
-          "i hate you, because everything is you cause. Please leave me alone!!!",
-        date: "8:32 am",
       },
     ],
   },
@@ -149,25 +137,18 @@ const tabsData = [
         name: "Maria Ozawa",
         avatarUrl:
           "https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2023/02/Hinh-anh-avatar-Facebook.jpg?ssl=1",
-        lastMesage: "Hello, can you help me?",
-        date: "2:23 pm",
       },
       {
         id: 2,
         name: "Tom Cruise",
         avatarUrl:
           "https://thuthuatnhanh.com/wp-content/uploads/2018/07/anh-dai-dien-dep.jpg",
-        lastMesage: "Oke, let do it",
-        date: "4:16 pm",
       },
       {
         id: 3,
         name: "Mizuki Sataro",
         avatarUrl:
           "https://inkythuatso.com/uploads/thumbnails/800/2022/03/anh-dai-dien-facebook-dep-cho-nam-30-28-16-26-50.jpg",
-        lastMesage:
-          "i hate you, because everything is you cause. Please leave me alone!!!",
-        date: "8:32 am",
       },
     ],
   },
@@ -177,6 +158,12 @@ export function Tabs() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
+  const [activeItemInTab, setActiveIteminTab] = useState({
+    tabIndex: -1,
+    itemIndex: -1,
+  });
+
+  const { showFriendModal, handleShowFriendModal } = useContext(ChatContext);
 
   const tabsRef = useRef([]);
 
@@ -219,8 +206,18 @@ export function Tabs() {
         {/* <p>{tabsData[activeTabIndex].content}</p> */}
         {tabsData[activeTabIndex].content.map((mess, idx) => (
           <div
-            className="flex flex-row gap-3 px-2 py-3 border-b-[1px] hover:cursor-pointer"
+            className={
+              "flex flex-row gap-3 px-2 py-3 border-b-[1px] hover:cursor-pointer " +
+              (activeTabIndex === activeItemInTab.tabIndex &&
+              idx === activeItemInTab.itemIndex
+                ? "bg-zinc-200 rounded-sm"
+                : "")
+            }
             key={idx}
+            onClick={() => {
+              setActiveIteminTab({ tabIndex: activeTabIndex, itemIndex: idx });
+              handleShowFriendModal(true, activeTabIndex, mess);
+            }}
           >
             <img
               className="rounded-full shadow-md ring-1 ring-black ring-opacity-15 w-[52px] h-[52px]"
@@ -229,16 +226,23 @@ export function Tabs() {
             />
             <div className="flex flex-col">
               <span className="text-lg">{mess.name}</span>
-              <div className="flex flex-row items-center gap-4 w-full">
-                <p className="text-md text-slate-600 font-medium max-w-[200px] truncate">
-                  {mess.lastMesage}
-                </p>
-                <span className="text-md font-light">{mess.date}</span>
-              </div>
+              {activeTabIndex === 0 ? (
+                <div className="flex flex-row items-center gap-4 w-full">
+                  <p className="text-md text-slate-600 font-medium max-w-[200px] truncate">
+                    {mess.lastMesage}
+                  </p>
+                  <span className="text-md font-light">{mess.date}</span>
+                </div>
+              ) : (
+                <span className="text-md font-light">
+                  Click here for more infomation
+                </span>
+              )}
             </div>
           </div>
         ))}
       </div>
+      {showFriendModal.show ? <FriendInfoModal /> : ""}
     </div>
   );
 }

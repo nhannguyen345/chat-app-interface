@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -14,6 +15,13 @@ const iconStyle = {
 
 const LeftBar = () => {
   const { showProfile, handleShowProfile } = useContext(ChatContext);
+  const navigate = useNavigate();
+
+  const handleNavigatePage = () => {
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
 
   return (
     <div className="max-w-[420px] h-full w-full">
@@ -29,7 +37,11 @@ const LeftBar = () => {
               onClick={handleShowProfile}
             />
             <div className="min-w-[120px] mr-5 flex flex-row justify-between">
-              <LogoutIcon className="hover:cursor-pointer" style={iconStyle} />
+              <LogoutIcon
+                className="hover:cursor-pointer"
+                style={iconStyle}
+                onClick={handleNavigatePage}
+              />
               <SettingsIcon
                 className="hover:cursor-pointer"
                 style={iconStyle}

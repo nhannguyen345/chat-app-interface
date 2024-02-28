@@ -1,4 +1,4 @@
-import ChatMain from "../components/Chatmain";
+import ChatMain from "../components/ChatMain";
 import ContactInfo from "../components/ContactInfo";
 import LeftBar from "../components/LeftBar";
 import ChatProvider from "../context/ChatProvider";
