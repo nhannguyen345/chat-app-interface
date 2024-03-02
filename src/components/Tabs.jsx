@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import ChatContext from "../context/chatContext";
 import { useContext } from "react";
 import FriendInfoModal from "./FriendInfoModal";
+import FriendRequestModal from "./FriendRequestModal";
+import SendFriendRequestModal from "./SendFriendRequestModal";
 const tabsData = [
   {
     label: "All message",
@@ -84,7 +86,7 @@ const tabsData = [
     ],
   },
   {
-    label: "Contacts (5)",
+    label: "Contacts",
     content: [
       {
         id: 1,
@@ -107,7 +109,7 @@ const tabsData = [
     ],
   },
   {
-    label: "Request (0)",
+    label: "Request",
     content: [
       {
         id: 1,
@@ -183,22 +185,23 @@ export function Tabs() {
   return (
     <div>
       <div className="relative px-3 mt-6 w-full">
-        <div className="flex space-x-3 border-b">
+        <div className="flex space-x-3 border-b-[0.5px] dark:border-b-[#202c33]">
           {tabsData.map((tab, idx) => {
             return (
               <button
                 key={idx}
                 ref={(el) => (tabsRef.current[idx] = el)}
-                className="w-[100px] pt-2 pb-3 text-gray-600"
+                className="w-[100px] pt-2 pb-3 text-gray-600 dark:text-[#E3E3E3]"
                 onClick={() => setActiveTabIndex(idx)}
               >
-                {tab.label}
+                {tab.label +
+                  (idx !== 0 && idx !== 3 ? ` (${tab.content.length})` : "")}
               </button>
             );
           })}
         </div>
         <span
-          className="absolute bottom-[6px] block h-[2px] bg-teal-500 transition-all duration-300"
+          className="absolute bottom-[6px] block h-[2px] bg-teal-500 dark:bg-[#E3E3E3] transition-all duration-300"
           style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
         />
       </div>
@@ -207,7 +210,7 @@ export function Tabs() {
         {tabsData[activeTabIndex].content.map((mess, idx) => (
           <div
             className={
-              "flex flex-row gap-3 px-2 py-3 border-b-[1px] hover:cursor-pointer " +
+              "flex flex-row gap-3 px-2 py-4 border-b-[0.5px] dark:border-b-[#202c33] hover:cursor-pointer " +
               (activeTabIndex === activeItemInTab.tabIndex &&
               idx === activeItemInTab.itemIndex
                 ? "bg-zinc-200 rounded-sm"
@@ -216,7 +219,9 @@ export function Tabs() {
             key={idx}
             onClick={() => {
               setActiveIteminTab({ tabIndex: activeTabIndex, itemIndex: idx });
-              handleShowFriendModal(true, activeTabIndex, mess);
+              if (activeTabIndex == 0) {
+                return;
+              } else handleShowFriendModal(true, activeTabIndex, mess);
             }}
           >
             <img
@@ -225,16 +230,18 @@ export function Tabs() {
               alt="avatar"
             />
             <div className="flex flex-col">
-              <span className="text-lg">{mess.name}</span>
+              <span className="text-lg dark:text-[#E3E3E3]">{mess.name}</span>
               {activeTabIndex === 0 ? (
                 <div className="flex flex-row items-center gap-4 w-full">
-                  <p className="text-md text-slate-600 font-medium max-w-[200px] truncate">
+                  <p className="text-md text-slate-600 font-medium max-w-[200px] truncate dark:text-[#E3E3E3]">
                     {mess.lastMesage}
                   </p>
-                  <span className="text-md font-light">{mess.date}</span>
+                  <span className="text-md font-light dark:text-[#E3E3E3]">
+                    {mess.date}
+                  </span>
                 </div>
               ) : (
-                <span className="text-md font-light">
+                <span className="text-md font-light dark:text-[#E3E3E3]">
                   Click here for more infomation
                 </span>
               )}
@@ -242,7 +249,21 @@ export function Tabs() {
           </div>
         ))}
       </div>
-      {showFriendModal.show ? <FriendInfoModal /> : ""}
+      {showFriendModal.show && showFriendModal.idxTab === 1 ? (
+        <FriendInfoModal handleClose={setActiveIteminTab} />
+      ) : (
+        ""
+      )}
+      {showFriendModal.show && showFriendModal.idxTab === 2 ? (
+        <FriendRequestModal handleClose={setActiveIteminTab} />
+      ) : (
+        ""
+      )}
+      {showFriendModal.show && showFriendModal.idxTab === 3 ? (
+        <SendFriendRequestModal handleClose={setActiveIteminTab} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

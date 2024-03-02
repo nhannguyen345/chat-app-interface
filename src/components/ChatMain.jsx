@@ -72,18 +72,18 @@ const ChatMain = () => {
   return (
     <div
       className={
-        "min-w-[40vw] h-full flex flex-col border-l-2 border-r-2 max-sm:hidden" +
+        "min-w-[40vw] h-full flex flex-col border-l-[0.5px] dark:border-l-gray-700 border-r-2 max-sm:hidden" +
         (!showContactIf ? " w-full" : "")
       }
     >
       {/* Thanh tiêu đề */}
-      <div className="flex flex-row gap-4 items-center h-[58px] w-full px-5 py-1 bg-[#f0f2f5]">
+      <div className="flex flex-row gap-4 items-center h-[58px] w-full px-5 py-1 bg-[#f0f2f5] dark:bg-[#202c33]">
         <img
           className="rounded-full shadow-md ring-1 ring-black ring-opacity-5 h-[42px] w-[42px] object-cover hover:cursor-pointer"
           src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2023/02/Hinh-anh-avatar-Facebook.jpg?ssl=1"
           alt=""
         />
-        <div className="min-w-[120px] mr-5 flex flex-col justify-evenly">
+        <div className="min-w-[120px] mr-5 flex flex-col justify-evenly dark:text-[#E3E3E3]">
           <span className="font-normal">Maria Ozawa</span>
           <span
             className="font-medium text-sm text-gray-400 hover:cursor-pointer"
@@ -167,7 +167,7 @@ const ChatMain = () => {
       </div>
 
       {/* Phần nhập liệu */}
-      <div className="relative h-[80px] w-full flex flex-row justify-around items-center bg-[#F0F2F5] px-5">
+      <div className="relative h-[80px] w-full flex flex-row justify-around items-center bg-[#F0F2F5] dark:bg-[#202c33] px-5">
         <div
           className={
             displayEmoji ? "block absolute bottom-[60px] left-[10px]" : "hidden"
@@ -176,14 +176,14 @@ const ChatMain = () => {
           <Picker onEmojiClick={onEmojiClick} />
         </div>
         <InsertEmoticonIcon
-          className="hover:cursor-pointer transform transition-transform active:scale-110"
-          sx={{ fontSize: 28, color: "#5c6c75" }}
+          className="hover:cursor-pointer transform transition-transform active:scale-110 fill-[#5c6c75] dark:fill-[#aebac1] "
+          sx={{ fontSize: 28 }}
           onClick={() => setDisplayEmoji(!displayEmoji)}
         />
         <div className="relative">
           <AddPhotoAlternateOutlinedIcon
-            className="relative hover:cursor-pointer transform transition-transform active:scale-110"
-            sx={{ fontSize: 28, color: "#5c6c75" }}
+            className="relative hover:cursor-pointer transform transition-transform active:scale-110 fill-[#5c6c75] dark:fill-[#aebac1]"
+            sx={{ fontSize: 28 }}
           />
           <input
             className="absolute left-0 file:cursor-pointer w-[30px] opacity-0"
@@ -194,7 +194,7 @@ const ChatMain = () => {
           />
         </div>
         <textarea
-          className="resize-none w-9/12 h-[50px] p-3 rounded-md outline-none font-sans"
+          className="resize-none w-9/12 h-[50px] p-3 rounded-md outline-none font-sans dark:bg-[#2c373d] dark:text-white"
           placeholder="Type a message"
           type="text"
           value={inputValue}
@@ -203,8 +203,8 @@ const ChatMain = () => {
           }}
         />
         <SendIcon
-          className="hover:cursor-pointer transform transition-transform active:scale-110"
-          sx={{ fontSize: 28, color: "#5c6c75" }}
+          className="hover:cursor-pointer transform transition-transform active:scale-110 fill-[#5c6c75] dark:fill-[#aebac1]"
+          sx={{ fontSize: 28 }}
           onClick={handleSendMessage}
         />
       </div>
