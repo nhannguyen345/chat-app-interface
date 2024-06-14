@@ -4,6 +4,7 @@ import { useContext } from "react";
 import FriendInfoModal from "./FriendInfoModal";
 import FriendRequestModal from "./FriendRequestModal";
 import SendFriendRequestModal from "./SendFriendRequestModal";
+import WebSocketService from "../services/WebSocketService";
 const tabsData = [
   {
     label: "All message",
@@ -157,6 +158,7 @@ const tabsData = [
 ];
 
 export function Tabs() {
+  const ws = WebSocketService.getInstance();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
@@ -181,6 +183,13 @@ export function Tabs() {
 
     return () => window.removeEventListener("resize", setTabPosition);
   }, [activeTabIndex]);
+
+  useEffect(() => {
+    ws.on("new_connection", (new_user) => {
+      tabsData[0].content = [];
+      tabsData[0].content.push(new_user);
+    });
+  });
 
   return (
     <div>
@@ -213,7 +222,7 @@ export function Tabs() {
               "flex flex-row gap-3 px-2 py-4 border-b-[0.5px] dark:border-b-[#202c33] hover:cursor-pointer " +
               (activeTabIndex === activeItemInTab.tabIndex &&
               idx === activeItemInTab.itemIndex
-                ? "bg-zinc-200 rounded-sm"
+                ? "bg-zinc-200 dark:bg-slate-700 rounded-sm"
                 : "")
             }
             key={idx}

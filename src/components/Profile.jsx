@@ -12,9 +12,9 @@ const Profile = () => {
   const handleChangeStatusEdtName = () => setStatusEdtName(!statusEdtName);
   const handleChangeStatusEdtAbout = () => setStatusEdtAbout(!statusEdtAbout);
   return (
-    <div className="w-full h-full flex flex-col animate-in slide-in-from-left-96 duration-300 bg-[#f0f2f5]">
+    <div className="w-full h-full flex flex-col animate-in slide-in-from-left-96 duration-300 bg-[#f0f2f5] dark:bg-[#111b21]">
       {/* Header */}
-      <div className="bg-[#4866a1] h-[120px] pt-[64px] pl-[20px] flex flex-row items-center gap-8">
+      <div className="bg-[#4866a1] dark:bg-[#202c33] h-[120px] pt-[64px] pl-[20px] flex flex-row items-center gap-8">
         <ArrowBackIcon
           className={"hover:cursor-pointer"}
           sx={{ fontSize: 24, color: "#ffffff" }}
@@ -30,7 +30,7 @@ const Profile = () => {
           className="w-[200px] h-[200px] mx-auto my-2"
           alt=""
         />
-        <div className="absolute bottom-[10px] left-[64%] transform -translate-x-1/2 rounded-full bg-white p-1">
+        <div className="absolute bottom-[10px] left-[64%] transform -translate-x-1/2 rounded-full bg-white p-1 dark:bg-[#aebac1]">
           <CameraAltIcon sx={{ fontSize: 24 }} />
           <input
             className="absolute left-0 w-[30px] opacity-0 file:cursor-pointer"
@@ -42,20 +42,24 @@ const Profile = () => {
       </div>
 
       {/* Infor */}
-      <div className="bg-white w-full py-3 px-7">
-        <label className="text-[#648ad6] text-[15px] leading-5" htmlFor="">
+      <div className="bg-white dark:bg-[#202c33] w-full py-3 px-7">
+        <label
+          className="text-[#648ad6] text-[15px] leading-5 dark:text-white"
+          htmlFor="name-edit"
+        >
           Your name
         </label>
         <div className="flex flex-row items-center gap-2">
           <input
+            id="name-edit"
             className={
-              "flex-1 outline-none py-1 text-lg border-b-[1.5px] border-[#4866a1] " +
+              "flex-1 outline-none py-1 text-lg border-b-[1.5px] border-[#4866a1] dark:bg-[#202c33] dark:text-white dark:border-white " +
               (!statusEdtName ? "pointer-events-none" : "")
             }
             type="text"
           />
           <EditIcon
-            className={"hover:cursor-pointer"}
+            className={"hover:cursor-pointer dark:fill-[#aebac1]"}
             sx={{
               fontSize: 24,
               color: "#5c6c75",
@@ -64,7 +68,7 @@ const Profile = () => {
             onClick={handleChangeStatusEdtName}
           />
           <CloseIcon
-            className={"hover:cursor-pointer "}
+            className={"hover:cursor-pointer dark:fill-[#aebac1]"}
             sx={{
               fontSize: 24,
               color: "#5c6c75",
@@ -78,20 +82,24 @@ const Profile = () => {
         This is not your usename. This name will be visible to you your contacts
         only
       </p>
-      <div className="bg-white w-full py-3 px-7">
-        <label className="text-[#648ad6] text-[15px] leading-5" htmlFor="">
+      <div className="bg-white dark:bg-[#202c33] w-full py-3 px-7">
+        <label
+          className="text-[#648ad6] text-[15px] leading-5 dark:text-white"
+          htmlFor="name-edit"
+        >
           About
         </label>
         <div className="flex flex-row items-center gap-2">
           <input
+            id="about-edit"
             className={
-              "flex-1 outline-none py-1 text-lg border-b-[1.5px] border-[#4866a1] " +
+              "flex-1 outline-none py-1 text-lg border-b-[1.5px] border-[#4866a1] dark:bg-[#202c33] dark:text-white dark:border-white " +
               (!statusEdtAbout ? "pointer-events-none" : "")
             }
             type="text"
           />
           <EditIcon
-            className={"hover:cursor-pointer "}
+            className={"hover:cursor-pointer dark:fill-[#aebac1]"}
             sx={{
               fontSize: 24,
               color: "#5c6c75",
@@ -100,7 +108,7 @@ const Profile = () => {
             onClick={handleChangeStatusEdtAbout}
           />
           <CloseIcon
-            className={"hover:cursor-pointer "}
+            className={"hover:cursor-pointer dark:fill-[#aebac1]"}
             sx={{
               fontSize: 24,
               color: "#5c6c75",
@@ -110,7 +118,7 @@ const Profile = () => {
           />
         </div>
       </div>
-      <button className="h-[34px] w-[260px] mt-3 text-center font-medium rounded-md bg-[#4866a1] text-white mx-auto">
+      <button className="h-[34px] w-[260px] mt-3 text-center font-medium rounded-md bg-[#4866a1] text-white mx-auto dark:bg-[#5c6c75]">
         Confirm
       </button>
     </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import bgChat from "../assets/bgChat.png";
+// import bgChatDarkMode from "../assets/bg-darkmode.jpg";
 import Picker from "emoji-picker-react";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
@@ -7,8 +8,10 @@ import SendIcon from "@mui/icons-material/Send";
 import ChatContext from "../context/chatContext";
 import { useContext } from "react";
 import ImageOverlay from "./ImageOverlay";
+import WebSocketService from "../services/WebSocketService";
 
 const ChatMain = () => {
+  const ws = WebSocketService.getInstance();
   const [displayEmoji, setDisplayEmoji] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [chatContent, setChatContent] = useState([]);
@@ -30,6 +33,15 @@ const ChatMain = () => {
     scrollToLastMessage();
   }, [chatContent]);
 
+  useEffect(() => {
+    ws.on("roomCreated", (data) => {
+      console.log(`${ws.socket.id} say: ${data}`);
+    });
+    return () => {
+      ws.off("roomCreated");
+    };
+  }, [ws]);
+
   const onEmojiClick = (emojiData, event) => {
     console.log(event);
     setInputValue((prevInput) => prevInput + emojiData.emoji);
@@ -47,6 +59,12 @@ const ChatMain = () => {
       },
     ]);
     setInputValue("");
+    ws.emit("message", {
+      roomname: localStorage.getItem("username"),
+      message: inputValue,
+    });
+
+    // ws.emit("message", localStorage.getItem("username"));
   };
 
   const handleSendImage = (e) => {
@@ -72,7 +90,7 @@ const ChatMain = () => {
   return (
     <div
       className={
-        "min-w-[40vw] h-full flex flex-col border-l-[0.5px] dark:border-l-gray-700 border-r-2 max-sm:hidden" +
+        "min-w-[40vw] h-full flex flex-col border-l-[0.5px] dark:border-l-gray-700 border-r-[0.5px] dark:border-r-gray-700 max-sm:hidden" +
         (!showContactIf ? " w-full" : "")
       }
     >
@@ -97,7 +115,7 @@ const ChatMain = () => {
       {/* Nội dung chat */}
       <div
         ref={refDiv}
-        className="w-full h-full overflow-y-auto flex-1 flex flex-col font-sans"
+        className={`w-full h-full overflow-y-auto flex-1 flex flex-col font-sans`}
         style={{ backgroundImage: `url(${bgChat})` }}
       >
         {chatContent.map((message, index) => {

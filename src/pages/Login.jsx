@@ -5,16 +5,17 @@ import toast, { Toaster } from "react-hot-toast";
 // import * as Yup from "yup";
 import LoopIcon from "@mui/icons-material/Loop";
 import logo_2 from "../assets/logo_2.png";
+import axios from "axios";
 
 const Login = () => {
   const [hasAccount, setHasAccount] = useState(true);
   // Tạo một biến state để làm hiệu ứng loading khi nhấn nút
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSwitchForm = () => {
     setHasAccount(!hasAccount);
-    setIsSubmitted(false);
+    setIsLoading(false);
   };
 
   const validateFullname = (value, hasAccount) => {
@@ -65,13 +66,45 @@ const Login = () => {
           }}
           onSubmit={(values) => {
             // same shape as initial values
+            // console.log(values);
+            // setIsLoading(true);
+            // setTimeout(() => {
+            //   setIsLoading(false);
+            //   navigate("/chat");
+            // }, 2000);
+            // return toast.success("Login successfully!");
+
             console.log(values);
-            setIsSubmitted(true);
-            setTimeout(() => {
-              setIsSubmitted(false);
-              navigate("/chat");
-            }, 2000);
-            return toast.success("Login successfully!");
+            setIsLoading(true);
+            if (hasAccount) {
+              axios
+                .post("http://localhost:3000/auth/login", values)
+                .then((res) => {
+                  console.log(res);
+                  setIsLoading(false);
+                  localStorage.setItem("key_token", res.data.access_token);
+                  localStorage.setItem("username", values.username);
+                  navigate("/chat");
+                })
+                .catch((err) => {
+                  console.log(err);
+                  setIsLoading(false);
+                  toast.error("Lỗi đăng nhập thất bại!");
+                });
+            } else {
+              axios
+                .post("http://localhost:3000/users/signup", values)
+                .then((res) => {
+                  console.log(res);
+                  setIsLoading(false);
+                  toast.success("Đăng ký thành công!");
+                })
+                .catch((err) => {
+                  console.log(err);
+                  setIsLoading(false);
+                  toast.error("Lỗi đăng ký thất bại!");
+                });
+            }
           }}
         >
           {({ errors, touched }) => (
@@ -144,7 +177,7 @@ const Login = () => {
                   className="text-white bg-[#506ea2] h-[35px] mt-6 rounded-sm active:bg-blue-400"
                   type="submit"
                 >
-                  {isSubmitted ? (
+                  {isLoading ? (
                     <>
                       <LoopIcon
                         className="animate-spin"

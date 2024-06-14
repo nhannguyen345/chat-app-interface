@@ -9,14 +9,15 @@ import ChatContext from "../context/chatContext";
 import { useContext, useState } from "react";
 import Profile from "./Profile";
 
-const iconStyle = {
-  color: "#54656f", // Đặt màu sắc mong muốn ở đây
-  // Các thuộc tính CSS khác nếu cần
-};
+// const iconStyle = {
+//   color: "#54656f", // Đặt màu sắc mong muốn ở đây
+//   // Các thuộc tính CSS khác nếu cần
+// };
 
 const LeftBar = () => {
   const { showProfile, handleShowProfile } = useContext(ChatContext);
   const [darkMode, setDarkMode] = useState(false);
+  const [menuSett, setMenuSett] = useState(false);
   const navigate = useNavigate();
 
   const toogleDarkMode = () => {
@@ -42,7 +43,7 @@ const LeftBar = () => {
               alt=""
               onClick={handleShowProfile}
             />
-            <div className="min-w-[120px] mr-5 flex flex-row justify-between">
+            <div className="relative min-w-[120px] mr-5 flex flex-row justify-between">
               <LogoutIcon
                 className="hover:cursor-pointer"
                 style={{ color: darkMode ? "#aebac1" : "#54656f" }}
@@ -51,7 +52,31 @@ const LeftBar = () => {
               <SettingsIcon
                 className="hover:cursor-pointer"
                 style={{ color: darkMode ? "#aebac1" : "#54656f" }}
+                onClick={() => setMenuSett(!menuSett)}
               />
+
+              {/* Display menu setting */}
+              {menuSett && (
+                <div className="absolute top-full animate-slide-down">
+                  <div
+                    className="mx-auto w-0 h-0
+                              border-l-[10px] border-l-transparent
+                              border-b-[10px] border-b-white
+                              border-r-[10px] border-r-transparent"
+                  ></div>
+                  <div className="w-[120px] h-fit mx-auto py-1 bg-white rounded-md shadow-md">
+                    <ul className="divide-y divide-solid">
+                      <li className="text-[15px] h-[30px] px-2 flex items-center hover:cursor-pointer hover:bg-blue-500 hover:text-white">
+                        Set Background
+                      </li>
+                      <li className="text-[15px] h-[30px] px-2 flex items-center hover:cursor-pointer hover:bg-blue-500 hover:text-white">
+                        Log out
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+
               {darkMode ? (
                 <LightModeIcon
                   className="hover:cursor-pointer"

@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --scrollbar-thumb-color-light: #10b981; /* Màu xanh lá cây cho light mode */
+  --scrollbar-thumb-color-dark: #ffffff; /* Màu trắng cho dark mode */
+  --scrollbar-track-color-light: #e5e7eb; /* Màu xám cho light mode */
+  --scrollbar-track-color-dark: #424955; /* Màu xám đậm cho dark mode */
+}
+
 body {
   font-family: "Lato", sans-serif;
   font-family: "Urbanist", sans-serif;
